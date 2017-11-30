@@ -3,6 +3,7 @@ package com.atguigu.mybatis.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.atguigu.mybatis.bean.OraclePage;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,5 +38,10 @@ public interface EmployeeMapper {
 	public boolean updateEmp(Employee employee);
 
 	public void deleteEmpById(Integer id);
+
+	public List<Employee> getEmps();
+
+	public Long addEmpByBantch(Employee employee);
+	public void getPageByProcedure(OraclePage page);
 
 }

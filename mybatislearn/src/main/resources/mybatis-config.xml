@@ -3,6 +3,28 @@
  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<typeHandlers>
+		<!--1、配置我们自定义的TypeHandler  -->
+		<typeHandler handler="com.atguigu.mybatis.typehandler.MyEnumEmpStatusTypeHandler" javaType="com.atguigu.mybatis.bean.EmpStatus"/>
+		<!--2、也可以在处理某个字段的时候告诉MyBatis用什么类型处理器
+				保存：#{empStatus,typeHandler=xxxx}
+				查询：
+					<resultMap type="com.atguigu.mybatis.bean.Employee" id="MyEmp">
+				 		<id column="id" property="id"/>
+				 		<result column="empStatus" property="empStatus" typeHandler=""/>
+				 	</resultMap>
+				注意：如果在参数位置修改TypeHandler，应该保证保存数据和查询数据用的TypeHandler是一样的。
+		  -->
+	</typeHandlers>
+	<!--plugins：注册插件  -->
+	<plugins>
+		<plugin interceptor="com.atguigu.mybatis.dao.MyFirstPlugin">
+			<property name="username" value="root"/>
+			<property name="password" value="123456"/>
+		</plugin>
+		<plugin interceptor="com.atguigu.mybatis.dao.MySecondPlugin"></plugin>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+	</plugins>
 	<!--
 		1、mybatis可以使用properties来引入外部properties配置文件的内容；
 		resource：引入类路径下的资源

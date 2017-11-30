@@ -3,12 +3,13 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
-
+	<!--整合e-->
 	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>-->
 	<!-- <cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"></cache> -->
 	<!--
 	eviction:缓存的回收策略：
-		• LRU – 最近最少使用的：移除最长时间不被使用的对象。
+		• LRU – 最近最少使用的：移除最长时间不被使˜用的对象。
 		• FIFO – 先进先出：按对象进入缓存的顺序来移除它们。
 		• SOFT – 软引用：移除基于垃圾回收器状态和软引用规则的对象。
 		• WEAK – 弱引用：更积极地移除基于垃圾收集器状态和弱引用规则的对象。
@@ -133,6 +134,35 @@
 	<delete id="deleteEmpById">
 		delete from tbl_employee where id=#{id}
 	</delete>
-	
+	<!--public List<Employee> getEmps();  -->
+	<select id="getEmps" resultType="com.atguigu.mybatis.bean.Employee">
+		select id,last_name lastName,email,gender from tbl_employee
+	</select>
+
+	<!--public Long addEmp(Employee employee);  -->
+	<insert id="addEmpByBantch" useGeneratedKeys="true" keyProperty="id">
+		insert into tbl_employee(last_name,email,gender,empStatus)
+		values(#{lastName},#{email},#{gender},#{empStatus})
+	</insert>
+
+
+	<!-- public void getPageByProcedure();
+	1、使用select标签定义调用存储过程
+	2、statementType="CALLABLE":表示要调用存储过程
+	3、{call procedure_name(params)}
+	-->
+	<select id="getPageByProcedure" statementType="CALLABLE" databaseId="oracle">
+		{call hello_test(
+		#{start,mode=IN,jdbcType=INTEGER},
+		#{end,mode=IN,jdbcType=INTEGER},
+		#{count,mode=OUT,jdbcType=INTEGER},
+		#{emps,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=PageEmp}
+		)}
+	</select>
+	<resultMap type="com.atguigu.mybatis.bean.Employee" id="PageEmp">
+		<id column="EMPLOYEE_ID" property="id"/>
+		<result column="LAST_NAME" property="email"/>
+		<result column="EMAIL" property="email"/>
+	</resultMap>
 	
 </mapper>

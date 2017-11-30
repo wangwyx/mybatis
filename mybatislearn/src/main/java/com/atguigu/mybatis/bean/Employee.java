@@ -22,7 +22,12 @@ public class Employee {
 		this.email = email;
 		this.gender = gender;
 	}
-	
+	public Employee(String lastName, String email, String gender) {
+		super();
+		this.lastName = lastName;
+		this.email = email;
+		this.gender = gender;
+	}
 	
 	
 
